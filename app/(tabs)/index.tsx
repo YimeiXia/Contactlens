@@ -1,15 +1,19 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useHeaderHeight } from '@react-navigation/elements';
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function TypeScreen() {
+  const headerHeight = useHeaderHeight(); // 🌟 Calcule la taille exacte du header
   // On stocke le label du type choisi (ex: 'Mensuel')
   const [typeChoisi, setTypeChoisi] = useState<string>('');
 
   const options = [
     { label: 'Hebdomadaire', jours: 7 },
+    { label: 'Bi-mensuel', jours: 15 },
     { label: 'Mensuel', jours: 30 },
     { label: 'Annuel', jours: 365 },
+
   ];
 
   // Au démarrage, on charge le type qui avait été sauvegardé
@@ -39,7 +43,7 @@ export default function TypeScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: headerHeight + 20 }]}> 
       <Text style={styles.title}>Ma Fréquence de Port</Text>
       <Text style={styles.subtitle}>Choisissez votre type de lentilles pour configurer les futurs rappels :</Text>
      
@@ -65,12 +69,12 @@ export default function TypeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f4f4f9', alignItems: 'center', justifyContent: 'center', padding: 20 },
-  title: { fontSize: 26, fontWeight: 'bold', marginBottom: 10, color: '#2d3436' },
-  subtitle: { fontSize: 16, color: '#636e72', textAlign: 'center', marginBottom: 30, paddingHorizontal: 20 },
+  container: { flex: 1, backgroundColor: 'transparent', padding: 20, alignItems: 'center' },
+  title: { fontSize: 26, fontWeight: 'bold', color: '#2d3436', marginBottom: 30 },
+  subtitle: { fontSize: 16, color: '#000', textAlign: 'center', marginBottom: 30, paddingHorizontal: 20 },
   button: { backgroundColor: '#fff', padding: 18, borderRadius: 12, marginVertical: 8, width: '80%', borderWidth: 2, borderColor: '#b2bec3' },
   // Style quand le bouton est sélectionné (Vert/Bleu moderne)
-  buttonActive: { backgroundColor: '#00b894', borderColor: '#00b894' },
+  buttonActive: { backgroundColor: '#00c7f4af', borderColor: '#0984e3' },
   buttonText: { color: '#2d3436', textAlign: 'center', fontSize: 18, fontWeight: '600' },
   buttonTextActive: { color: '#fff' }
 });

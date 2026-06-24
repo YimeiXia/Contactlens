@@ -24,6 +24,7 @@ export const planifierRappelDepuisMemoire = async () => {
     const typeChoisi = await AsyncStorage.getItem('typeLentilles') || 'mensuel';
     let joursAjouter = 30;
     if (typeChoisi === 'Hebdomadaire') joursAjouter = 7;
+    if (typeChoisi === 'Bi-mensuel') joursAjouter = 15;
     if (typeChoisi === 'Mensuel') joursAjouter = 30;
     if (typeChoisi === 'Annuel') joursAjouter = 365;
 
@@ -33,7 +34,7 @@ export const planifierRappelDepuisMemoire = async () => {
    
     // On ajoute le nombre de jours à la date de la mémoire !
     cible20h30.setDate(cible20h30.getDate() + joursAjouter);
-    cible20h30.setHours(16, 35, 0, 0); // Toujours à 20h30
+    cible20h30.setHours(20, 30, 0, 0); // Toujours à 20h30
 
     console.log("Dernier changement :", dateDernierChangementStr);
     console.log("Type :", typeChoisi);
@@ -50,8 +51,8 @@ export const planifierRappelDepuisMemoire = async () => {
         year: cible20h30.getFullYear(),
         month: cible20h30.getMonth() + 1,
         day: cible20h30.getDate(),
-        hour: 16,
-        minute: 35,
+        hour: 20,
+        minute: 30,
       } as any,
     });
 

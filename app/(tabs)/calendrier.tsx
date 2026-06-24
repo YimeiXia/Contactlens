@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useHeaderHeight } from '@react-navigation/elements';
 import { useFocusEffect } from 'expo-router'; // 🌟 Pour rafraîchir l'écran automatiquement
 import React, { useCallback, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
@@ -6,6 +7,7 @@ import { Calendar } from 'react-native-calendars';
 import { planifierRappelDepuisMemoire } from '../../utils/dateHelper';
 
 export default function CalendrierScreen() {
+const headerHeight = useHeaderHeight(); // 🌟 Calcule la taille exacte du header
   const [joursCoches, setJoursCoches] = useState<any>({});
 
   // 1. RECHARGE LA MÉMOIRE À CHAQUE FOIS QU'ON ASSICHE CET ONGLET
@@ -25,7 +27,7 @@ export default function CalendrierScreen() {
       historique.forEach((date: string) => {
         structureCalendrier[date] = {
           selected: true,
-          selectedColor: '#2ecc71', // Un joli vert pour dire "changé !"
+          selectedColor: '#00c7f4af', // Un joli vert pour dire "changé !"
         };
       });
      
@@ -94,16 +96,21 @@ export default function CalendrierScreen() {
 
 
 
-  return (
-    <View style={styles.container}>
+  return (    
+
+    <View style={[styles.container, { paddingTop: headerHeight + 20 }]}> 
       <Text style={styles.titre}>Historique de mes changements</Text>
      
       <Calendar
         onDayPress={gererClicJour}
         markedDates={joursCoches}
+        style={styles.calendrierStyle} // 🌟 On applique le nouveau style ici
         theme={{
-          todayTextColor: '#0984e3',
-          arrowColor: '#0984e3',
+          calendarBackground: 'transparent', 
+          todayTextColor: '#00c7f4af',
+          arrowColor: '#000',
+          textSectionTitleColor: '#000',
+          dayTextColor: '#000',
         }}
       />
      
@@ -114,25 +121,39 @@ export default function CalendrierScreen() {
   );
 }
 
+
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: 50,
-    paddingHorizontal: 10,
-  },
+    backgroundColor: 'transparent',
+    padding: 20, 
+},
   titre: {
-    fontSize: 22,
+    fontSize: 26,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 20,
-    color: '#2c3e50',
+    marginBottom: 30,
+    color: '#2d3436',
   },
   Légende: {
     marginTop: 20,
     textAlign: 'center',
-    color: '#7f8c8d',
+    color: '#000',
     fontStyle: 'italic',
     paddingHorizontal: 20,
+  },
+  calendrierStyle: {
+    backgroundColor: 'rgba(255, 255, 255, 0.80)', // Fond blanc à 80% d'opacité
+    borderRadius: 15, // Bords arrondis
+    paddingBottom: 10, // Petit espace en bas
+    // --- Ombres pour iOS ---
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+    // --- Ombre pour Android ---
+    elevation: 8, 
   }
 });

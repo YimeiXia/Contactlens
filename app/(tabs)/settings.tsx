@@ -1,9 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useHeaderHeight } from '@react-navigation/elements';
 import * as Notifications from 'expo-notifications'; // Import des notifications
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 export default function SettingsScreen() {
+  const headerHeight = useHeaderHeight(); // 🌟 Calcule la taille exacte du header
   const [notificationsActives, setNotificationsActives] = useState(true);
 
   useEffect(() => {
@@ -86,7 +88,7 @@ export default function SettingsScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: headerHeight + 20 }]}> 
       <Text style={styles.title}>Mon Compte</Text>
 
       <View style={styles.card}>
@@ -120,7 +122,7 @@ export default function SettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f4f4f9', padding: 20, paddingTop: 60, alignItems: 'center' },
+  container: { flex: 1, backgroundColor: 'transparent', padding: 20, alignItems: 'center' },
   title: { fontSize: 26, fontWeight: 'bold', color: '#2d3436', marginBottom: 30 },
   card: { backgroundColor: '#fff', padding: 20, borderRadius: 15, width: '90%', marginBottom: 20, elevation: 2 },
   avatar: { width: 60, height: 60, borderRadius: 30, backgroundColor: '#0984e3', justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginBottom: 10 },
