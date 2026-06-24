@@ -1,98 +1,76 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+export default function TypeScreen() {
+  // On stocke le label du type choisi (ex: 'Mensuel')
+  const [typeChoisi, setTypeChoisi] = useState<string>('');
 
-export default function HomeScreen() {
+  const options = [
+    { label: 'Hebdomadaire', jours: 7 },
+    { label: 'Mensuel', jours: 30 },
+    { label: 'Annuel', jours: 365 },
+  ];
+
+  // Au démarrage, on charge le type qui avait été sauvegardé
+  useEffect(() => {
+    chargerTypeSauvegarde();
+  }, []);
+
+  const chargerTypeSauvegarde = async () => {
+    try {
+      const typeSauve = await AsyncStorage.getItem('typeLentilles');
+      if (typeSauve !== null) {
+        setTypeChoisi(typeSauve);
+      }
+    } catch (e) {
+      // Erreur de lecture
+    }
+  };
+
+  const enregistrerChoix = async (label: string) => {
+    try {
+      setTypeChoisi(label); // Met à jour l'interface
+      await AsyncStorage.setItem('typeLentilles', label); // Sauvegarde en mémoire
+      Alert.alert("Configuration", `Fréquence configurée sur : ${label}`);
+    } catch (e) {
+      Alert.alert("Erreur", "Impossible d'enregistrer le choix");
+    }
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <View style={styles.container}>
+      <Text style={styles.title}>Ma Fréquence de Port</Text>
+      <Text style={styles.subtitle}>Choisissez votre type de lentilles pour configurer les futurs rappels :</Text>
+     
+      {options.map((item) => {
+        // En Python/C, on ferait un "if". Ici on vérifie si c'est l'option active
+        const estSelectionne = item.label === typeChoisi;
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+        return (
+          <TouchableOpacity
+            key={item.label}
+            // Si le bouton est sélectionné, on lui applique le style "buttonActive"
+            style={[styles.button, estSelectionne ? styles.buttonActive : null]}
+            onPress={() => enregistrerChoix(item.label)}
+          >
+            <Text style={[styles.buttonText, estSelectionne ? styles.buttonTextActive : null]}>
+              {item.label} {estSelectionne ? '✓' : ''}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  container: { flex: 1, backgroundColor: '#f4f4f9', alignItems: 'center', justifyContent: 'center', padding: 20 },
+  title: { fontSize: 26, fontWeight: 'bold', marginBottom: 10, color: '#2d3436' },
+  subtitle: { fontSize: 16, color: '#636e72', textAlign: 'center', marginBottom: 30, paddingHorizontal: 20 },
+  button: { backgroundColor: '#fff', padding: 18, borderRadius: 12, marginVertical: 8, width: '80%', borderWidth: 2, borderColor: '#b2bec3' },
+  // Style quand le bouton est sélectionné (Vert/Bleu moderne)
+  buttonActive: { backgroundColor: '#00b894', borderColor: '#00b894' },
+  buttonText: { color: '#2d3436', textAlign: 'center', fontSize: 18, fontWeight: '600' },
+  buttonTextActive: { color: '#fff' }
 });
