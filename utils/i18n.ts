@@ -1,0 +1,208 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+
+const resources = {
+  fr: {
+    translation: {
+        titreParametres: "Paramètres",
+        choixLangue: "Choisir la langue :",
+        francais: "Français",
+        anglais: "Anglais",
+        chinois: "Chinois",
+        ongletType: "Type",
+        ongletCalendrier: "Calendrier",
+        ongletSettings: "Réglages",
+        titreCalendrier: "Historique de mes changements",
+        legendeCalendrier: "💡 Cliquez sur un jour pour l'ajouter ou le supprimer de votre historique.",
+        titreType: "Ma Fréquence de Port",
+        legendeType: "Choisissez votre type de lentilles pour configurer les futurs rappels :",
+        Hebdomadaire_type: "Hebdomadaire",
+        Bimensuel_type: "Bi-mensuel",
+        Mensuel_type: "Mensuel",
+        Annuel_type: "Annuel",
+        rappel: "Rappels automatiques",
+        compte: "Mon Compte",
+        alertA: "Vous devez activer les notifications dans les réglages de votre iPhone.",
+        alertTitreA: "Permission refusée",
+        alertB: "Désactivé",
+        alertTitreB: "Veuillez d'abord activer les rappels automatiques.",
+        rappelTitre: "👁️ Rappel Lentilles",
+        rappelBody: "C'est le moment de changer vos lentilles ! Votre cycle est terminé.",
+        alerteSuiviTitre: "👁️ Suivi des Lentilles",
+        alerteSuiviQuestion: "Avez-vous changé vos lentilles aujourd'hui ?",
+        ouiFait: "Oui, c'est fait ! 🎉",
+        nonPasEncore: "Non, pas encore",
+        reporterTitre: "⏰ Reporter le rappel",
+        reporterQuestion: "Quand souhaitez-vous recevoir la prochaine notification ?",
+        dansUneHeure: "Dans 1 heure",
+        ceSoir: "Ce soir (à 20h)",
+        demain: "Demain",
+        sauvegardeTitre: "Sauvegardé avec succès ! 💾",
+        rappelSnoozeTitre: "⏰ Rappel Lentilles",
+        rappelSnoozeBody: "N'oubliez pas de changer vos lentilles dès que possible !",
+        changementEnregistre: "Changement enregistré dans le calendrier.",
+        errorMemery: "Erreur mémoire",
+        errorMemoire: "Impossible d'accéder au stockage.",
+        rappelCalcule: "Prochain rappel automatique le {{date}} à 20h30.",
+        rappelConfigure: "Nouveau rappel configuré : {{quand}}",
+        rappelProgramme: "Rappel programmé",
+        titreConfiguration: "Configuration",
+        frequenceConfiguree: "Fréquence configurée sur : {{type}}",
+        error: "Erreur",
+        impossibleEnregistrerChoix: "Impossible d'enregistrer le choix",
+        modif: "📅 Modification",
+        questionMarquerJour: "Voulez-vous marquer le {{date}} comme jour de changement de lentilles ?",
+        ouiEnregistrer: "Oui, enregistrer",
+        impossibleSauvegarder: "Impossible de sauvegarder.",
+        supprimerCeJour: "Supprimer ce jour",
+        supprime: "Supprimé",
+        dateRetiree: "La date a été retirée de l'historique.",
+        annuler: "Annuler",
+        aujourdhui: "Aujourd'hui"
+
+
+
+    }
+  },
+  en: {
+    translation: {
+        titreParametres: "Settings",
+        choixLangue: "Choose language:",
+        francais: "French",
+        anglais: "English",
+        chinois: "Chinese",
+        ongletType: "Type",
+        ongletCalendrier: "Calendar",
+        ongletSettings: "Settings",
+        titreCalendrier: "My change history",
+        legendeCalendrier: "💡 Click on a day to add or remove it from your history.",
+        titreType: "My Wearing Frequency",
+        legendeType: "Choose your lens type to configure future reminders:",
+        Hebdomadaire_type: "Weekly",
+        Bimensuel_type: "Bi-monthly",
+        Mensuel_type: "Monthly",
+        Annuel_type: "Yearly",
+        rappel: "Automatic reminders",
+        compte: "My Account",
+        alertA: "You must enable notifications in your iPhone settings.",
+        alertTitreA: "Permission denied",
+        alertB: "Disabled",
+        alertTitreB: "Please enable automatic reminders first.",
+        rappelTitre: "👁️ Lens Reminder",
+        rappelBody: "It's time to change your lenses! Your cycle is complete.",
+        alerteSuiviTitre: "👁️ Lens Tracking",
+        alerteSuiviQuestion: "Did you change your lenses today?",
+        ouiFait: "Yes, done! 🎉",
+        nonPasEncore: "No, not yet",
+        reporterTitre: "⏰ Snooze reminder",
+        reporterQuestion: "When would you like to be notified again?",
+        dansUneHeure: "In 1 hour",
+        ceSoir: "Tonight (at 8 PM)",
+        demain: "Tomorrow",
+        sauvegardeTitre: "Successfully saved! 💾",
+        rappelSnoozeTitre: "⏰ Lens Reminder",
+        rappelSnoozeBody: "Don't forget to change your lenses as soon as possible!",
+        changementEnregistre: "Change recorded in the calendar.",
+        errorMemery: "Memory Error",
+        errorMemoire: "Unable to access storage.",
+        rappelCalcule: "Next automatic reminder on {{date}} at 8:30 PM.",
+        rappelConfigure: "New reminder set: {{quand}}",
+        rappelProgramme: "Reminder scheduled",
+        titreConfiguration: "Configuration",
+        frequenceConfiguree: "Frequency set to: {{type}}",
+        error: "Error",
+        impossibleEnregistrerChoix: "Unable to save choice",
+        modif: "📅 Modification",
+        questionMarquerJour: "Do you want to mark {{date}} as a lens change day?",
+        ouiEnregistrer: "Yes, save",
+        impossibleSauvegarder: "Unable to save.",
+        supprimerCeJour: "Delete this day",
+        supprime: "Deleted",
+        dateRetiree: "The date has been removed from the history.",
+        annuler: "Cancel",
+        aujourdhui: "Today"
+    }
+  },
+  zh: {
+    translation: {
+        titreParametres: "设置",
+        choixLangue: "选择语言 :",
+        francais: "法语",
+        anglais: "英语",
+        chinois: "中文",
+        ongletType: "类型",
+        ongletCalendrier: "日历",
+        ongletSettings: "设置",
+        titreCalendrier: "我的更换记录",
+        legendeCalendrier: "💡 点击一天以在记录中添加或删除它。",
+        titreType: "我的隐形眼镜类型",
+        legendeType: "选择您的镜片类型以配置未来的提醒：",
+        Hebdomadaire_type: "每周",
+        Bimensuel_type: "每半月",
+        Mensuel_type: "每月",
+        Annuel_type: "每年",
+        rappel: "自动提醒",
+        compte: "我的账户",
+        alertA: "您必须在 iPhone 设置中启用通知。",
+        alertTitreA: "权限被拒绝",
+        alertB: "已禁用",
+        alertTitreB: "请先启用自动提醒。",
+        rappelTitre: "👁️ 镜片提醒",
+        rappelBody: "是时候更换您的镜片了！您的周期已完成。",
+        alerteSuiviTitre: "👁️ 隐形眼镜记录",
+        alerteSuiviQuestion: "您今天更换隐形眼镜了吗？",
+        ouiFait: "是的，换好了！ 🎉",
+        nonPasEncore: "还没",
+        reporterTitre: "⏰ 推迟提醒",
+        reporterQuestion: "您希望什么时候再次收到提醒？",
+        dansUneHeure: "1小时后",
+        ceSoir: "今晚 (20点)",
+        demain: "明天",
+        sauvegardeTitre: "保存成功！ 💾",
+        rappelSnoozeTitre: "⏰ 隐形眼镜提醒",
+        rappelSnoozeBody: "请尽快更换您的隐形眼镜！",
+        changementEnregistre: "更换已记录在日历中。",
+        errorMemery: "内存错误",
+        errorMemoire: "无法访问存储。",
+        rappelCalcule: "下一次自动提醒将在 {{date}} 20:30。",
+        rappelConfigure: "已设置新提醒：{{quand}}",
+        rappelProgramme: "提醒已设置",
+        titreConfiguration: "配置",
+        frequenceConfiguree: "频率设置为：{{type}}",
+        error: "错误",
+        impossibleEnregistrerChoix: "无法保存选择",
+        modif: "📅 修改",
+        questionMarquerJour: "您想将 {{date}} 标记为镜片更换日吗？",
+        ouiEnregistrer: "是的，保存",
+        impossibleSauvegarder: "无法保存。",
+        supprimerCeJour: "删除这一天",
+        supprime: "已删除",
+        dateRetiree: "该日期已从历史记录中移除。",
+        annuler: "取消",
+        aujourdhui: "今天"
+    }
+  }
+};
+
+// 1. Initialisation immédiate (synchrone)
+i18n
+  .use(initReactI18next)
+  .init({
+    // @ts-ignore : Indispensable pour la compatibilité avec React Native    compatibilityJSON: 'v3', // 🌟 LA LIGNE MAGIQUE POUR REACT NATIVE
+    resources,
+    lng: 'fr',               // Langue de base au premier lancement
+    fallbackLng: 'fr',
+    interpolation: {
+      escapeValue: false 
+    }
+  });
+
+// 2. On vérifie la mémoire en arrière-plan et on met à jour si besoin
+AsyncStorage.getItem('langueApp').then((langueSauvegardee) => {
+  if (langueSauvegardee) {
+    i18n.changeLanguage(langueSauvegardee);
+  }
+});
+
+export default i18n;

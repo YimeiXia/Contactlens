@@ -1,13 +1,14 @@
 
 
 
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
 import { Stack } from 'expo-router';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next'; // 🌟 Import ajouté
 import { Alert } from 'react-native';
 import { planifierRappelDepuisMemoire } from '../utils/dateHelper';
+import '../utils/i18n';
 
 // 1. Gestion de l'affichage des notifications au premier plan
 Notifications.setNotificationHandler({
@@ -20,6 +21,7 @@ Notifications.setNotificationHandler({
 
 
 export default function RootLayout() {
+  const { t, i18n } = useTranslation(); 
   useEffect(() => {
    
     // Fonction magique qui s'exécute quand on clique sur la notification
@@ -28,11 +30,11 @@ export default function RootLayout() {
        
         setTimeout(() => {
           Alert.alert(
-            "👁️ Suivi des Lentilles",
-            "Avez-vous changé vos lentilles aujourd'hui ?",
+            i18n.t('alerteSuiviTitre'), // 🌟 Traduit
+            i18n.t('alerteSuiviQuestion'), // 🌟 Traduit
             [
               {
-                text: "Oui, c'est fait ! 🎉",
+                text: i18n.t('ouiFait'), // 🌟 Traduit
                 onPress: async () => {
                   // Si l'utilisateur clique oui depuis la notif, on prend la date du jour au format AAAA-MM-JJ
                   const aujourdhui = new Date().toISOString().split('T')[0];
@@ -40,28 +42,27 @@ export default function RootLayout() {
                 }
               },
               {
-                text: "Non, pas encore",
+                text: i18n.t('nonPasEncore'),
                 style: "destructive",
                 onPress: () => {
                   setTimeout(() => {
                     Alert.alert(
-                      "⏰ Reporter le rappel",
-                      "Quand souhaitez-vous recevoir la prochaine notification ?",
+                      i18n.t('reporterTitre'), // 🌟 Traduit
+                      i18n.t('reporterQuestion'), // 🌟 Traduit
                       [
-                        { text: "Dans 1 heure", onPress: () => programmerRelanceSecondes(3600, "Dans 1 heure") },
+                        { text: i18n.t('dansUneHeure'), onPress: () => programmerRelanceSecondes(3600, i18n.t('dansUneHeure')) },
                         {
-                          text: "Ce soir (à 20h)",
+                          text: i18n.t('ceSoir'),
                           onPress: () => {
                             const maintenant = new Date();
                             const ceSoir = new Date();
                             ceSoir.setHours(20, 0, 0, 0);
                             if (maintenant > ceSoir) ceSoir.setDate(ceSoir.getDate() + 1);
                             const secondesRestantes = Math.round((ceSoir.getTime() - maintenant.getTime()) / 1000);
-                            programmerRelanceSecondes(secondesRestantes, "Ce soir à 20h");
+                            programmerRelanceSecondes(secondesRestantes, i18n.t('ceSoir'));
                           }
                         },
-                        { text: "Demain", onPress: () => programmerRelanceSecondes(86400, "Demain") },
-                        { text: "Annuler", style: "cancel" }
+                        { text: i18n.t('demain'), onPress: () => programmerRelanceSecondes(86400, i18n.t('demain')) },
                       ]
                     );
                   }, 400);
@@ -81,7 +82,7 @@ export default function RootLayout() {
     // Écouteur pour l'arrière-plan (si l'app était déjà ouverte)
     const subscription = Notifications.addNotificationResponseReceivedListener(gererLeClicNotification);
     return () => subscription.remove();
-  }, []);
+  }, [i18n.t]);
 
 
 
@@ -105,17 +106,26 @@ export default function RootLayout() {
       const cible20h30 = await planifierRappelDepuisMemoire();
 
       if (cible20h30 !== null && cible20h30 !== undefined) {
+        // 1. On détermine le format local selon la langue choisie
+        let localeCode = 'fr-FR';
+        if (i18n.language === 'en') localeCode = 'en-US';
+        if (i18n.language === 'zh') localeCode = 'zh-CN';
+
+        // 2. On formate la date pour la langue
+        const dateFormatee = cible20h30.toLocaleDateString(localeCode);
+
+        // 3. On affiche l'alerte en passant la variable { date: ... }
         Alert.alert(
-          "Sauvegardé avec succès ! 💾",
-          `Changement enregistré.\nProchain rappel automatique calculé pour le ${cible20h30.toLocaleDateString('fr-FR')} à 20h30.`
+          i18n.t('sauvegardeTitre'),
+          i18n.t('rappelCalcule', { date: dateFormatee }) // 🌟 La magie opère ici !
         );
       } else {
         // Optionnel : au cas où la mémoire renvoie null
-        Alert.alert("Sauvegardé ! 💾", "Changement enregistré dans le calendrier.");
+        Alert.alert(i18n.t('sauvegardeTitre'), i18n.t('changementEnregistre'));
       }
 
     } catch (erreur) {
-      Alert.alert("Erreur mémoire", "Impossible d'accéder au stockage.");
+      Alert.alert(i18n.t('errorMemery'), i18n.t('errorMemoire'));
       console.log(erreur);
     }
   };
@@ -127,15 +137,18 @@ export default function RootLayout() {
     try {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: "⏰ Rappel Lentilles",
-          body: "N'oubliez pas de changer vos lentilles dès que possible !",
+          title: i18n.t('rappelSnoozeTitre'),
+          body: i18n.t('rappelSnoozeBody'),
         },
         trigger: {
           type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
           seconds: secondes,
         } as any,
       });
-      Alert.alert("Rappel programmé", `Nouveau rappel configuré : ${texteAffichage}`);
+      Alert.alert(
+        i18n.t('rappelProgramme'), 
+        i18n.t('rappelConfigure', { quand: texteAffichage })
+      );
     } catch (e) {
       Alert.alert("Erreur", "Impossible de programmer le rappel");
     }

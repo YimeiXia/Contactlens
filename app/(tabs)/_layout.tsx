@@ -1,12 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { useTranslation } from 'react-i18next'; // 🌟 1. On importe le traducteur
 import { ImageBackground, StyleSheet } from 'react-native';
 
 export default function TabLayout() {
   // Chargement de l'image locale (chemin relatif par rapport à app/(tabs)/_layout.tsx)
   const fondImage = require('../../assets/images/fond.jpg');
 
+  const { t, i18n } = useTranslation(); 
   return (
     <ImageBackground 
       source={fondImage} 
@@ -35,21 +37,21 @@ export default function TabLayout() {
         <Tabs.Screen
           name="index"
           options={{
-            title: 'Type',
+            title: i18n.t('ongletType'), // 🌟 3. Titre dynamique
             tabBarIcon: ({ color }) => <Ionicons name="list" size={28} color={color} />,
           }}
         />
         <Tabs.Screen
           name="calendrier"
           options={{
-            title: 'Calendrier',
+            title: i18n.t('ongletCalendrier'),
             tabBarIcon: ({ color }) => <Ionicons name="calendar" size={28} color={color} />,
           }}
         />
         <Tabs.Screen
           name="settings"
           options={{
-            title: 'Settings',
+            title: i18n.t('ongletSettings'),
             tabBarIcon: ({ color }) => <Ionicons name="settings" size={28} color={color} />,
           }}
         />
