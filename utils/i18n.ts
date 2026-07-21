@@ -59,7 +59,14 @@ const resources = {
         supprime: "Supprimé",
         dateRetiree: "La date a été retirée de l'historique.",
         annuler: "Annuler",
-        aujourdhui: "Aujourd'hui"
+        aujourdhui: "Aujourd'hui",
+
+        modifier: "Modifier",
+sauvegarder: "Sauvegarder",
+votreNom: "Votre nom",
+votreEmail: "Votre email",
+utilisateurParDefaut: "Utilisateur",
+emailNonRenseigne: "Ajouter un email...",
 
 
 
@@ -121,7 +128,14 @@ const resources = {
         supprime: "Deleted",
         dateRetiree: "The date has been removed from the history.",
         annuler: "Cancel",
-        aujourdhui: "Today"
+        aujourdhui: "Today",
+
+        modifier: "Edit",
+sauvegarder: "Save",
+votreNom: "Your name",
+votreEmail: "Your email",
+utilisateurParDefaut: "User",
+emailNonRenseigne: "Add an email...",
     }
   },
   zh: {
@@ -180,7 +194,14 @@ const resources = {
         supprime: "已删除",
         dateRetiree: "该日期已从历史记录中移除。",
         annuler: "取消",
-        aujourdhui: "今天"
+        aujourdhui: "今天",
+
+        modifier: "编辑",
+sauvegarder: "保存",
+votreNom: "您的名字",
+votreEmail: "您的邮箱",
+utilisateurParDefaut: "用户",
+emailNonRenseigne: "添加邮箱...",
     }
   }
 };

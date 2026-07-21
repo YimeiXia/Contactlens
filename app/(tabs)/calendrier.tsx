@@ -205,15 +205,16 @@ const styles = StyleSheet.create({
   headerCalendrier: {
     alignItems: 'flex-end', // Aligne le bouton à droite (ou 'center'/'flex-start' selon ton goût)
     marginBottom: 10,
-    paddingHorizontal: 10,
+    //paddingHorizontal: 10,
   },
   boutonAujourdhui: {
     backgroundColor: 'rgba(255, 255, 255, 0.80)',
     paddingVertical: 8,
     paddingHorizontal: 16,
-    borderRadius: 20,
+    borderRadius: 15,
     borderWidth: 1,
     borderColor: '#0984e3',
+
   },
   texteAujourdhui: {
     color: '#0984e3',
