@@ -1,18 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useHeaderHeight } from '@react-navigation/elements';
 import { useFocusEffect } from 'expo-router'; // 🌟 Pour rafraîchir l'écran automatiquement
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next'; // 🌟 1. On importe le traducteur
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { planifierRappelDepuisMemoire } from '../../utils/dateHelper';
 
 
 
-
-
 export default function CalendrierScreen() {
-const headerHeight = useHeaderHeight(); // 🌟 Calcule la taille exacte du header
+  const insets = useSafeAreaInsets();
+  const headerHeight = insets.top + 44;
+
   const [joursCoches, setJoursCoches] = useState<any>({});
 
   const { t, i18n } = useTranslation(); 

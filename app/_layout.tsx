@@ -1,10 +1,9 @@
 
 
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
 import { Stack } from 'expo-router';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next'; // 🌟 Import ajouté
 import { Alert } from 'react-native';
 import { planifierRappelDepuisMemoire } from '../utils/dateHelper';

@@ -1,13 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useHeaderHeight } from '@react-navigation/elements';
 import * as Notifications from 'expo-notifications';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function SettingsScreen() {
-  const headerHeight = useHeaderHeight();
-  
+  const insets = useSafeAreaInsets();
+  const headerHeight = insets.top + 44;  
   // --- STATES ---
   const [notificationsActives, setNotificationsActives] = useState(true);
   const [nom, setNom] = useState('');

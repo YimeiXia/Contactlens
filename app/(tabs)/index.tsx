@@ -1,11 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useHeaderHeight } from '@react-navigation/elements';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function TypeScreen() {
-  const headerHeight = useHeaderHeight(); 
+
+  const insets = useSafeAreaInsets();
+  const headerHeight = insets.top + 44;
   // 🌟 typeChoisi va maintenant stocker l'ID secret (ex: 'mensuel') et non plus le texte traduit
   const [typeChoisi, setTypeChoisi] = useState<string>('');
   const { i18n } = useTranslation(); 

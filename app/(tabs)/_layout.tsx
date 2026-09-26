@@ -1,9 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import React from 'react';
 import { useTranslation } from 'react-i18next'; // 🌟 1. On importe le traducteur
 import { ImageBackground, StyleSheet } from 'react-native';
-
 export default function TabLayout() {
   // Chargement de l'image locale (chemin relatif par rapport à app/(tabs)/_layout.tsx)
   const fondImage = require('../../assets/images/fond.jpg');
